@@ -17,6 +17,8 @@ st.dataframe(df)
 
 st.header('Mileage Based on Vehicle Type')
 # histogram figure
-fig = px.histogram(df, x='odometer', color='manufacturer', facet_col='type')
+fig = px.bar(df, x='type', y='odometer', color='manufacturer', barmode='group',
+             labels={'odometer': 'Average Odometer', 'type': 'Vehicle Type'},
+             title='Average Odometer by Vehicle Type and Manufacturer')
 
-st.write(fig)
+st.plotly_chart(fig)
