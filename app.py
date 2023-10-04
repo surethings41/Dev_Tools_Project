@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd 
 import plotly.express as px
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import LabelEncoder
 
 
 column_names= ["price", "model_year", "model", "condition", "cylinders", "fuel", "odometer", "transmission", "type", "paint_color", "is_4wd", "date_posted", "days_listed"]
@@ -42,3 +40,9 @@ fig.update_traces(marker_color='red')  # You can change the marker_color as desi
 # Display the chart using st.plotly_chart
 st.title('Average Odometer Reading by Manufacturer')
 
+st.header('Scatter Plot of Mileage and Condition Correlation')
+
+fig = px.scatter('vehicles_us.csv', x='odometer', y='condition')
+
+
+st.plotly_chart(fig, use_container_width=True)
