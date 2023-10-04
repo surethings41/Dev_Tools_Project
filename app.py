@@ -17,6 +17,5 @@ st.dataframe(df)
 
 st.header('Mileage Based on Vehicle Type')
 # histogram figure
-fig = px.histogram(df, x='odometer', y='type', color='manufacturer')
-
+fig = px.histogram(df, x='odometer', color='type')
 st.write(fig)
