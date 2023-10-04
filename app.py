@@ -39,3 +39,12 @@ fig.update_traces(marker_color='red')  # You can change the marker_color as desi
 # Display the chart using st.plotly_chart
 st.title('Average Odometer Reading by Manufacturer')
 st.plotly_chart(fig)
+
+
+
+
+# Create a scatter plot with Plotly Express
+fig = px.scatter(df, x='mileage', y='condition', title='Scatter Plot of Mileage vs. Condition')
+
+# Show the plot
+fig.show()
