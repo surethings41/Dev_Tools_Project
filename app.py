@@ -36,13 +36,17 @@ fig = px.bar(manufacturer_avg_odometer, x='manufacturer', y='odometer', title='A
 fig.update_layout(xaxis_title='Manufacturer', yaxis_title='Average Odometer (Miles)')
 fig.update_traces(marker_color='red')  # You can change the marker_color as desired
 
-
 # Display the chart using st.plotly_chart
 st.title('Average Odometer Reading by Manufacturer')
 
-st.header('Scatter Plot of Mileage and Condition Correlation')
+st.header('Scatter Plot of Correlation between Mileage and Days on Market')
 
-fig = px.scatter('vehicles_us.csv', x='odometer', y='condition')
+# Create a scatter plot using Plotly Express with DataFrame 'df'
+fig = px.scatter(df, x='odometer', y='days_listed', color='manufacturer', title='Scatter Plot of Mileage vs. Manufacturer', opacity=.6)
 
+# Customize the chart layout if needed
+fig.update_layout(xaxis_title='Odometer', yaxis_title='Days_Listed')
+fig.update_traces(marker=dict(size=6))
 
+# Display the scatter plot using st.plotly_chart
 st.plotly_chart(fig, use_container_width=True)
