@@ -1,6 +1,18 @@
 # Dev_Tools_Project
-This application seeks to analyze data of car sales advertisements 
+This application seeks to analyze data of car sales in the US.
 
-It should contain a basic description of the project, explaining that this is a tool to simulate random events, and the methods and libraries used to implement it. It should also contain instructions on how other people could launch your project on their local machine if they wanted to.
+More specifically, it will illustrate the following:
+A) The average miles obn the odometer per vehicle based on the manufacturer
+B) The correlation between Odometer reading and Days on Market
+C) The condition distribution between Manufacturers with the option to filter for both 4wd and non-4wd vehicles
+
+
+Libraries used:
+Streamlit
+Pandas
+Plotly.Express
+
+
+
 
 
