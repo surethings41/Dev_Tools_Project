@@ -17,36 +17,74 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
 df = df[df['manufacturer'] != 'mercedes-benz']
 
+df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
+df.dropna(subset=['odometer'], inplace=True)
 
 st.header('US Vehicles Data Sheet') 
 st.dataframe(df)
 
-
-st.header('Mileage Based on Vehicle Type')
-# histogram figure
 df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
+df.dropna(subset=['odometer'], inplace=True)
 
-# Group data by 'manufacturer' and calculate the average 'odometer' value
+st.header('Average Milage per Manufacturer')
+
+# grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
 
-# Create a Plotly Express bar chart
-fig = px.bar(manufacturer_avg_odometer, x='manufacturer', y='odometer', title='Average Odometer Reading by Manufacturer')
+st.write(px.histogram(manufacturer_avg_odometer, x='manufacturer', y='odometer',
+                   labels={'odometer': 'Average Mileage (Miles)', 'manufacturer': 'Manufacturer'},
+                   orientation='v'))
 
-# Customize the chart layout if needed
-fig.update_layout(xaxis_title='Manufacturer', yaxis_title='Average Odometer (Miles)')
-fig.update_traces(marker_color='red')  # You can change the marker_color as desired
 
-# Display the chart using st.plotly_chart
-st.title('Average Odometer Reading by Manufacturer')
+st.header('Correlation between Mileage and Days on Market')
 
-st.header('Scatter Plot of Correlation between Mileage and Days on Market')
 
-# Create a scatter plot using Plotly Express with DataFrame 'df'
-fig = px.scatter(df, x='odometer', y='days_listed', color='manufacturer', title='Scatter Plot of Mileage vs. Manufacturer', opacity=.6)
 
-# Customize the chart layout if needed
-fig.update_layout(xaxis_title='Odometer', yaxis_title='Days_Listed')
-fig.update_traces(marker=dict(size=6))
+# scatter plot using Plotly Express 
+st.write(px.scatter(df, x='odometer', y='days_listed', color='manufacturer', opacity=.6))
 
-# Display the scatter plot using st.plotly_chart
+
+
+st.header('Compare Condition Distribution between Manufacturers')
+st.subheader('Compare Condition Distribution between Manufacturers')
+
+manufact_list = sorted(df['manufacturer'].unique())
+
+manufacturer1 = st.selectbox('Select Manufacturer 1', 
+                             options=manufact_list,
+                             index=manufact_list.index('toyota')
+                             )
+manufacturer2 = st.selectbox('Select Manufacturer 2',
+                             options=manufact_list,
+                             index=manufact_list.index('jeep')
+                             )
+
+# checkbox to select 'is_4wd' values
+show_4wd = st.checkbox('Show 4WD Vehicles', value=True)
+
+# filtered the df based on manufacturer and 'is_4wd'
+manufacturer_filtered_df = df[(df['manufacturer'] == manufacturer1) | (df['manufacturer'] == manufacturer2)]
+
+# filtered the df based on 'is_4wd' checkbox
+if not show_4wd:
+    filtered_df = manufacturer_filtered_df[manufacturer_filtered_df['is_4wd'].isna()]
+else:
+    filtered_df = manufacturer_filtered_df
+
+# bar chart to compare 'condition' distribution between manufacturers
+fig = px.histogram(
+    filtered_df,
+    x='condition',
+    color='manufacturer',
+    title=f'Condition Comparison: {manufacturer1} vs. {manufacturer2}',
+    labels={'condition': 'Condition'},
+    barmode='overlay',
+    opacity=.8,
+)
 st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+
