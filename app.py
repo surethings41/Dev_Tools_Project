@@ -6,7 +6,7 @@ import plotly.express as px
 column_names= ["price", "model_year", "model", "condition", "cylinders", "fuel", "odometer", "transmission", "type", "paint_color", "is_4wd", "date_posted", "days_listed"]
 
 
-df = pd.read_csv('https://github.com/surethings41/Dev_Tools_Project/vehicles_us.csv', sep =',', header=None, names=column_names)
+df = pd.read_csv('https://raw.githubusercontent.com/surethings41/Dev_Tools_Project/main/vehicles_us.csv', sep =',', header=None, names=column_names)
 
 df = df.iloc[2:]
 
