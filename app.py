@@ -41,10 +41,10 @@ st.header('Correlation between Mileage and Days on Market')
 
 
 # scatter plot using Plotly Express 
-st.write(px.scatter(df, x='odometer', y='days_listed', color='manufacturer', opacity=.6
+st.write(px.scatter(df, x='odometer', y='days_listed', color='manufacturer', opacity=.6,
                     labels = {'odometer': 'Odometer', 'days_listed': 'Days Listed', 'manufacturer' : 'Manufacturer'}))
 
-
+run
 
 st.header('Compare Condition Distribution between Manufacturers')
 st.subheader('Compare Condition Distribution between Manufacturers')
