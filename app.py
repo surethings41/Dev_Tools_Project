@@ -77,7 +77,7 @@ fig = px.histogram(
     x='condition',
     color='manufacturer',
     title=f'Condition Comparison: {manufacturer1} vs. {manufacturer2}',
-    labels={'condition': 'Condition'},
+    labels={'condition': 'Condition', 'count':'Number of Vehicles'},
     barmode='overlay',
     opacity=.8,
 )
