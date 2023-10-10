@@ -28,6 +28,16 @@ df.dropna(subset=['odometer'], inplace=True)
 
 st.header('Average Milage per Manufacturer')
 
+# the 'price' column data type is Object and for filtering purposes I think it should be 'int' type
+df['price'] = df['price'].astype(int)
+
+# filter for price range
+min_price = st.slider('Select Minimum Price', min_value=min(df['price']), max_value=max(df['price']))
+max_price = st.slider('Select Maximum Price', min_value=min(df['price']), max_value=max(df['price']))
+
+# filtered the df based on the selected price range
+filtered_df = df[(df['price'] >= min_price) & (df['price'] <= max_price)]
+
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
 
