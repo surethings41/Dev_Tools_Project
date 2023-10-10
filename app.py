@@ -26,16 +26,9 @@ st.dataframe(df)
 df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
 df.dropna(subset=['odometer'], inplace=True)
 
+
+
 st.header('Average Milage per Manufacturer')
-
-# the 'price' column data type is Object and for filtering purposes I think it should be 'int' type
-df['price'] = df['price'].astype(int)
-
-# filter for price range
-max_price = st.slider('Select Maximum Price',  max_value=max(df['price']),)
-
-# filtered the df based on the selected price range
-filtered_df = df['price'] <= max_price
 
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
@@ -49,10 +42,17 @@ st.write(px.histogram(manufacturer_avg_odometer, x='manufacturer', y='odometer',
 
 st.header('Correlation between Mileage and Days on Market')
 
+# the 'price' column data type is Object and for filtering purposes I think it should be 'int' type
+df['price'] = df['price'].astype(int)
 
+
+
+selected_condition = st.selectbox('Select Condition', df['condition'].unique())
+
+condition_df = df[(df['condition'] == selected_condition)]
 
 # scatter plot using Plotly Express 
-st.write(px.scatter(df, x='odometer', y='days_listed', color='manufacturer', opacity=.6,
+st.write(px.scatter(condition_df, x='odometer', y='days_listed', color='manufacturer', opacity=.6,
                     labels = {'odometer': 'Odometer', 'days_listed': 'Days Listed', 'manufacturer' : 'Manufacturer'}))
 
 
