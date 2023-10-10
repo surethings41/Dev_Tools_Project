@@ -76,7 +76,7 @@ else:
 fig = px.histogram(
     filtered_df,
     x='Condition',
-    y='Number of Vehicles'
+    y='Number of Vehicles',
     color='manufacturer',
     title=f'Condition Comparison: {manufacturer1} vs. {manufacturer2}',
     labels={'condition': 'Condition'},
