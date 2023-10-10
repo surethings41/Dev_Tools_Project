@@ -74,7 +74,7 @@ else:
 # bar chart to compare 'condition' distribution between manufacturers
 fig = px.histogram(
     filtered_df,
-    x='Condition',
+    x='condition',
     y='Number of Vehicles',
     color='manufacturer',
     title=f'Condition Comparison: {manufacturer1} vs. {manufacturer2}',
