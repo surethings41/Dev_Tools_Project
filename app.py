@@ -77,10 +77,13 @@ fig = px.histogram(
     x='condition',
     color='manufacturer',
     title=f'Condition Comparison: {manufacturer1} vs. {manufacturer2}',
-    labels={'condition': 'Condition', 'count':'Number of Vehicles'},
+    labels={'condition': 'Condition'},
     barmode='overlay',
     opacity=.8,
 )
+
+fig.update_yaxes(title_text='Number of Vehicles')
+
 st.plotly_chart(fig, use_container_width=True)
 
 
