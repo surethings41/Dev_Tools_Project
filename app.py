@@ -32,11 +32,10 @@ st.header('Average Milage per Manufacturer')
 df['price'] = df['price'].astype(int)
 
 # filter for price range
-min_price = st.slider('Select Minimum Price', min_value=min(df['price']), max_value=max(df['price']), key = 'Price Filter')
 max_price = st.slider('Select Maximum Price', min_value=min(df['price']), max_value=max(df['price']), key = 'Price Filter')
 
 # filtered the df based on the selected price range
-filtered_df = df[(df['price'] >= min_price) & (df['price'] <= max_price)]
+filtered_df = df['price'] <= max_price
 
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
