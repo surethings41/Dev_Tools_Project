@@ -31,6 +31,14 @@ st.header('Average Milage per Manufacturer')
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
 
+# filter for price range
+min_price = st.slider('Select Minimum Price', min_value=min(df['price']), max_value=max(df['price']))
+max_price = st.slider('Select Maximum Price', min_value=min(df['price']), max_value=max(df['price']))
+
+# filtering the df based on the selected price range
+filtered_df = df[(df['price'] >= min_price) & (df['price'] <= max_price)]
+
+
 st.write(px.histogram(manufacturer_avg_odometer, x='manufacturer', y='odometer',
                    labels={'odometer': 'Average Mileage (Miles)', 'manufacturer': 'Manufacturer'},
                    orientation='v'))
