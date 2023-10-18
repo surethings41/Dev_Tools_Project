@@ -8,18 +8,12 @@ C) The condition distribution between Manufacturers with the option to filter fo
 
 
 Libraries used:
-Streamlit /
-Pandas / 
-Plotly.Express 
-
+Streamlit
+Pandas
+Plotly.Express
 
 One can access the application through the following link:
 https://dev-tools-project.onrender.com/
-
-
-
-
-
 
 
 
