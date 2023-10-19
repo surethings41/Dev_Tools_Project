@@ -6,7 +6,7 @@ import plotly.express as px
 column_names= ["price", "model_year", "model", "condition", "cylinders", "fuel", "odometer", "transmission", "type", "paint_color", "is_4wd", "date_posted", "days_listed"]
 
 
-df = pd.read_csv('https://raw.githubusercontent.com/surethings41/Dev_Tools_Project/main/vehicles_us.csv', sep =',', header=None, names=column_names)
+df = pd.read_csv('notebooks/post_eda_us_vehicle.csv', sep =',', header=None, names=column_names)
 
 df = df.iloc[2:]
 
@@ -17,47 +17,73 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
 df = df[df['manufacturer'] != 'mercedes-benz']
 
-df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
-df.dropna(subset=['odometer'], inplace=True)
+
 
 st.header('US Vehicles Data Sheet') 
 st.dataframe(df)
 
-df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
-df.dropna(subset=['odometer'], inplace=True)
-
 
 
 st.header('Average Milage per Manufacturer')
+
+df['odometer']=df['odometer'].astype(int)
+df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
 
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
 manufacturer_avg_odometer = df.groupby('manufacturer')['odometer'].mean().reset_index()
 
 
 
-st.write(px.histogram(manufacturer_avg_odometer, x='manufacturer', y='odometer',
-                   labels={'odometer': 'Average Mileage (Miles)', 'manufacturer': 'Manufacturer'},
-                   orientation='v'))
+fig = px.bar(
+    manufacturer_avg_odometer,
+    x='manufacturer',
+    y='odometer',
+    labels={'odometer': 'Average Mileage (Miles)', 'manufacturer': 'Manufacturer'},
+    title='Average Mileage per Manufacturer'
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
 
 
 st.header('Correlation between Mileage and Days on Market')
 
-# the 'price' column data type is Object and for filtering purposes I think it should be 'int' type
-df['price'] = df['price'].astype(int)
-
-
-
 selected_condition = st.selectbox('Select Condition', df['condition'].unique())
 
-condition_df = df[(df['condition'] == selected_condition)]
+# Filter rows with non-null and non-zero 'odometer' values
+condition_df = df[(df['condition'] == selected_condition) & (df['odometer'].notna()) & (df['odometer'] != 0)]
 
-# scatter plot using Plotly Express 
-st.write(px.scatter(condition_df, x='odometer', y='days_listed', color='manufacturer', opacity=.6,
-                    labels = {'odometer': 'Odometer', 'days_listed': 'Days Listed', 'manufacturer' : 'Manufacturer'}))
+# Scatter plot using Plotly Express
+scatter_fig = px.scatter(
+    condition_df, 
+    x='odometer', 
+    y='days_listed', 
+    color='manufacturer', 
+    opacity=.6,
+    labels={'odometer': 'Odometer', 'days_listed': 'Days Listed', 'manufacturer': 'Manufacturer'}
+)
+
+scatter_fig.update_layout(
+    xaxis=dict(
+        range=[50000, int(condition_df['odometer'].max()) + 50000],
+        tickvals=list(range(1, int(condition_df['odometer'].max())+ 50000, 50000)),  
+    ),
+    yaxis=dict(
+        range=[5, 300],  
+        tickvals=list(range(5, 300, 20)), 
+    )
+)
+
+# Display the scatter plot using st.plotly_chart
+st.plotly_chart(scatter_fig, use_container_width=True)
+
+
+
+
+
 
 
 st.header('Compare Condition Distribution between Manufacturers')
-st.subheader('Compare Condition Distribution between Manufacturers')
 
 manufact_list = sorted(df['manufacturer'].unique())
 
