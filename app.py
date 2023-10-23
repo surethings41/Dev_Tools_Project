@@ -6,27 +6,37 @@ import plotly.express as px
 column_names= ["price", "model_year", "model", "condition", "cylinders", "fuel", "odometer", "transmission", "type", "paint_color", "is_4wd", "date_posted", "days_listed"]
 
 
-df = pd.read_csv('notebooks/post_eda_us_vehicle.csv', sep =',', header=None, names=column_names)
+df = pd.read_csv('us_vehicle_3.1.csv', sep =',', header=None, names=column_names, encoding='utf-8', index_col=False)
+
+df = df[column_names].shift(axis=0)
 
 df = df.iloc[2:]
-
-df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
-
-# the data set carries negligable amounts of mercedes-benz's, many of which have missing data in the other categories. 
-# for my purposes here im going to exclude all rows that include 'mercedes-benz' in the manufacturer column 
-
-df = df[df['manufacturer'] != 'mercedes-benz']
+df['manufacturer'] = df['model'].astype(str).apply(lambda x: x.split()[0])
 
 
 
-st.header('US Vehicles Data Sheet') 
+
+st.header('US Vehicles Data Sheet (2018-2019)') 
+st.subheader('This application seeks to analyze data of car sales in the US between 2018 and 2019.')
+st.write('More Specifically, it will attempt to illustrate the following:')
+st.write('-The average miles on the odometer per vehicle based on the manufacturer')
+st.write('-The correlation between Odometer reading and Days on Market')
+st.write('-The condition distribution between Manufacturers with the option to filter for both 4wd and non-4wd vehicles')
+st.write('-The predominate car colors on the market are "White", "Black", and "Silver"')
+
+st.subheader('Below is a display of the raw data from the csv file.')
+st.write('***Duplicates and missing values have all been removed/metigated in order to not disrupt certain conclusions and observations')
 st.dataframe(df)
 
 
 
-st.header('Average Milage per Manufacturer')
 
-df['odometer']=df['odometer'].astype(int)
+st.header('Average Milage per Manufacturer')
+st.write('-Acura, Toyota, GMC, and Honda all have the highest average (in order) milage-per-vehicle.') 
+st.write('-We might be able to make an inferrence that cars from these manufacturers have a tendency to last longer and be more reliable.')
+st.write('-Further analysis would be required to confirm this. ')
+
+df['odometer']=df['odometer'].astype(float)
 df['odometer'] = pd.to_numeric(df['odometer'], errors='coerce')
 
 # grouping data by 'manufacturer' and calculating the average 'odometer' value
@@ -47,6 +57,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 st.header('Correlation between Mileage and Days on Market')
+st.write('There is a positive correlation between the miles on the odometer of a vehicle and the days that is spends on-market.')
 
 selected_condition = st.selectbox('Select Condition', df['condition'].unique())
 
@@ -84,6 +95,8 @@ st.plotly_chart(scatter_fig, use_container_width=True)
 
 
 st.header('Compare Condition Distribution between Manufacturers')
+st.write('Further analysis of the "condition" distribution between manufacturers reveals a lot more details concerning the inference made on the first conclusion.')
+st.write('One revelation in particular is that when the condition distribution between Honda and Toyota is illustrated, even though Honda has a higher average mileage per vehicle, Toyota has roughly 40% to 50% more units in better condition either on the road or in the market. ')
 
 manufact_list = sorted(df['manufacturer'].unique())
 
@@ -123,6 +136,36 @@ fig.update_yaxes(title_text='Number of Vehicles')
 
 st.plotly_chart(fig, use_container_width=True)
 
+
+st.header('Pie Chart of Car Colors based on # of Total cars on Market')
+
+
+data = pd.DataFrame({'paint_color': ['white', 'black', 'silver', 'grey', 'blue', 'red', 'green', 'brown', 'custom', 'yellow', 'orange', 'purple'],
+                     'Count': [9960, 7606, 6193, 4995, 4444, 4386, 1377, 1206, 1142, 253, 225, 101]})
+
+color_map = {
+    'white': 'white',
+    'black': 'black',
+    'silver': 'silver',
+    'grey': 'grey',
+    'blue': 'blue',
+    'red': 'red',
+    'green': 'green',
+    'brown': 'brown',
+    'custom': 'rgb(255, 0, 255)',
+    'yellow': 'yellow',
+    'orange': 'orange',
+    'purple': 'purple',
+}
+
+data['color'] = data['paint_color'].map(color_map)
+
+fig = px.pie(data, names='paint_color', values='Count',
+             title='Pie Chart of Paint Colors in DF',
+             color='color', 
+             color_discrete_map=color_map)
+
+st.plotly_chart(fig, use_container_width=True)
 
 
 
