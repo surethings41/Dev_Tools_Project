@@ -5,6 +5,7 @@ More specifically, it will illustrate the following:
 A) The average miles on the odometer per vehicle based on the manufacturer
 B) The correlation between Odometer reading and Days on Market
 C) The condition distribution between Manufacturers with the option to filter for both 4wd and non-4wd vehicles
+D) The predominate car colors on the market are "White", "Black", and "Silver"
 
 
 Libraries used:
