@@ -6,7 +6,7 @@ import plotly.express as px
 column_names= ["price", "model_year", "model", "condition", "cylinders", "fuel", "odometer", "transmission", "type", "paint_color", "is_4wd", "date_posted", "days_listed"]
 
 
-df = pd.read_csv('us_vehicle_3.1.csv', sep =',', header=None, names=column_names, encoding='utf-8', index_col=False)
+df = pd.read_csv('https://github.com/surethings41/Dev_Tools_Project/blob/main/us_vehicle_3.1.csv', sep =',', header=None, names=column_names, encoding='utf-8', index_col=False)
 
 df = df[column_names].shift(axis=0)
 
