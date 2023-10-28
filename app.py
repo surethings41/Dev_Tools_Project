@@ -77,8 +77,8 @@ scatter_fig = px.scatter(
 
 scatter_fig.update_layout(
     xaxis=dict(
-        range=[50000, int(condition_df['odometer'].max()) + 50000],
-        tickvals=list(range(1, int(condition_df['odometer'].max())+ 50000, 50000)),  
+        range=[50000, int(condition_df['odometer'].max()) + 100000],
+        tickvals=list(range(1, int(condition_df['odometer'].max())+ 100000, 100000)),  
     ),
     yaxis=dict(
         range=[5, 300],  
